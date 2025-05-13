@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: node:latest
+        command: ["node"]
+        args:
+          - "-e"
+          - |
+            const http = require('http');
+            const os = require('os');
+            const port = 3000;
+            
+            const server = http.createServer((req, res) => {
+              console.log(`Request received from: ${req.connection.remoteAddress}`);
+              
+              res.writeHead(200, {
+                'Content-Type': 'text/plain',
+                'X-Custom-Header': 'MyCustomValue'
+              });
+
+              res.end(`Running on ${os.hostname()}!\n`);
+            });
+
+            server.listen(port, () => {
+              console.log(`Running on port ${port}`);
+            });
+        ports:
+        - containerPort: 3000
