@@ -5,7 +5,7 @@ metadata:
   namespace: dev
 subjects:
 - kind: ServiceAccount
-  name: default
+  name: testserviceaccount
   namespace: dev
 roleRef:
   kind: Role
